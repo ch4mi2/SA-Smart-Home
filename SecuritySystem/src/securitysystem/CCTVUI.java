@@ -88,15 +88,28 @@ public class CCTVUI {
 		this.infoPanel.add(cctvOnOff);
 		this.infoPanel.add(cctvDetected);
 		
-	    this.frame.setSize(500,500);  
-	    this.frame.setLayout(new GridLayout(2,1));  
-	    this.frame.add(this.infoPanel);
-	    this.frame.add(this.btnCtrlPanel);
-	    this.frame.setVisible(true); 
+//	    this.frame.setSize(500,500);  
+//	    this.frame.setLayout(new GridLayout(2,1));  
+//	    this.frame.add(this.infoPanel);
+//	    this.frame.add(this.btnCtrlPanel);
+//	    this.frame.setVisible(true); 
 	}
 	
 	public void stopUI() {
 		this.frame.setVisible(false);
 	}
+	
+	public JPanel getInfoPanel() {
+		return this.infoPanel;
+	}
+	
+	public JPanel getBtnPanel() {
+		return this.btnCtrlPanel;
+	}
+	
+	public JFrame getFrame() {
+		return this.frame;
+	}
+	
 	
 }

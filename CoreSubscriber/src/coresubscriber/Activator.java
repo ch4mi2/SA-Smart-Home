@@ -1,6 +1,9 @@
 package coresubscriber;
 
 
+import java.awt.GridLayout;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import org.osgi.framework.BundleActivator;
@@ -14,6 +17,7 @@ public class Activator implements BundleActivator {
 	ServiceReference serviceReference;
 	ServiceReference serviceReference2;
 	ServiceReference<?> cctvUIserviceReference;
+	JFrame mainFrame;
 
 
 	public void start(BundleContext bundleContext) throws Exception {
@@ -29,7 +33,17 @@ public class Activator implements BundleActivator {
 		
 		cctvUIserviceReference = bundleContext.getServiceReference(CCTVUI.class.getName());
 		CCTVUI cctvUI = (CCTVUI) bundleContext.getService(cctvUIserviceReference);
+		
+		mainFrame = new JFrame();
+	
 		cctvUI.startUI();
+		// Add to frame
+		mainFrame.add(cctvUI.getInfoPanel());
+		mainFrame.add(cctvUI.getBtnPanel());
+		
+		mainFrame.setSize(500,500);  
+		mainFrame.setLayout(new GridLayout(2,1));  
+		mainFrame.setVisible(true);
 	}
 
 	public void stop(BundleContext bundleContext) throws Exception {
