@@ -22,7 +22,8 @@ public class Activator implements BundleActivator {
 			CCTV cctvSystem = (CCTV) bundleContext.getService(cctvServiceReference);
 			controlUnit.attachCCTV(cctvSystem);
 		} catch (Exception e) {
-			System.out.println(e);
+			System.out.println(e + " : " + "CCTVPublisher is not started");
+			
 		}
 		
 		try {
@@ -30,7 +31,7 @@ public class Activator implements BundleActivator {
 			Alarm alarmSystem = (Alarm) bundleContext.getService(alarmServiceReference);
 			controlUnit.attachAlarm(alarmSystem);
 		} catch (Exception e) {
-			System.out.println(e);
+			System.out.println(e + " : " + "AlarmPublisher is not started");
 		}
 		cctvRegistration = bundleContext.registerService(
 				CCTVUI.class.getName(), controlUnit, null);
