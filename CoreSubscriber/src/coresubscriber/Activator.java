@@ -9,15 +9,18 @@ import javax.swing.JFrame;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
+
+
 import securitysystem.CCTVUI;
 
 
 public class Activator implements BundleActivator {
 
-	ServiceReference serviceReference;
+	//ServiceReference<?> clockServiceReference;
 	ServiceReference serviceReference2;
 	ServiceReference<?> cctvUIserviceReference;
 	JFrame mainFrame;
+	//ClockPublish clock;
 
 
 	public void start(BundleContext bundleContext) throws Exception {
@@ -34,10 +37,14 @@ public class Activator implements BundleActivator {
 		cctvUIserviceReference = bundleContext.getServiceReference(CCTVUI.class.getName());
 		CCTVUI cctvUI = (CCTVUI) bundleContext.getService(cctvUIserviceReference);
 		
+		//clockServiceReference = bundleContext.getServiceReference(ClockPublish.class.getName());
+		//clock =  (ClockPublish) bundleContext.getService(clockServiceReference);
+		
 		mainFrame = new JFrame();
 	
 		cctvUI.startUI();
 		// Add to frame
+		//mainFrame.add()
 		mainFrame.add(cctvUI.getInfoPanel());
 		mainFrame.add(cctvUI.getBtnPanel());
 		
@@ -48,7 +55,7 @@ public class Activator implements BundleActivator {
 
 	public void stop(BundleContext bundleContext) throws Exception {
 		System.out.println("core stopped");
-		bundleContext.ungetService(serviceReference);
+		//bundleContext.ungetService(clockServiceReference);
 		bundleContext.ungetService(cctvUIserviceReference);
 	}
 
