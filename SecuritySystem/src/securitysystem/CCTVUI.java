@@ -180,10 +180,18 @@ public class CCTVUI {
 	public boolean setAlarm(boolean val) {
 		if(this.alarm != null) {
 			this.alarm.setRinging(val);
+			if(val) {
+				alarmStatusLabel.setText("Alarm Ringing");		
+			}else {
+				alarmStatusLabel.setText("Alarm not Ringing");
+			}
 			return this.alarm.isRinging();
 		} 
 		return false;
 	}
 	
+	public boolean getAlarmStatus() {
+		return this.alarm.isRinging();
+	}
 	
 }
