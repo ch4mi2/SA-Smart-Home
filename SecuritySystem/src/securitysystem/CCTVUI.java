@@ -185,5 +185,8 @@ public class CCTVUI {
 		return false;
 	}
 	
+	public Alarm getAlarm() {
+		return this.alarm;
+	}
 	
 }
