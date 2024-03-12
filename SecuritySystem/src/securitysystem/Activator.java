@@ -6,11 +6,13 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import alarmpublisher.Alarm;
 import cctvpublisher.CCTV;
+import clockpublisher.ClockPublish;
 
 public class Activator implements BundleActivator {
 
 	ServiceReference<?> cctvServiceReference;
 	ServiceReference<?> alarmServiceReference;
+	ServiceReference<?> clockServiceReference;
 	ServiceRegistration<?> cctvRegistration;
 	
 	public void start(BundleContext bundleContext) throws Exception {
@@ -33,6 +35,16 @@ public class Activator implements BundleActivator {
 		} catch (Exception e) {
 			System.out.println(e + " : " + "AlarmPublisher is not started");
 		}
+		
+		
+		try {
+			clockServiceReference = bundleContext.getServiceReference(ClockPublish.class.getName());
+			ClockPublish clockSystem = (ClockPublish) bundleContext.getService(clockServiceReference);
+			controlUnit.attachClock(clockSystem);
+		} catch (Exception e) {
+			System.out.println(e + " : " + "AlarmPublisher is not started");
+		}
+		
 		cctvRegistration = bundleContext.registerService(
 				CCTVUI.class.getName(), controlUnit, null);
 		
