@@ -2,14 +2,10 @@ package securitysystem;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-
 import javax.swing.*;
-
 import alarmpublisher.Alarm;
 import cctvpublisher.CCTV;
-import cctvpublisher.CCTVImpl;    
+import clockpublisher.ClockPublish;    
 
 public class CCTVUI {
 	JFrame frame;
@@ -26,6 +22,7 @@ public class CCTVUI {
 	JPanel infoPanel;
 	CCTV cctv;
 	Alarm alarm;
+	ClockPublish clock;
 	
 	public void attachCCTV(CCTV cctv) {
 		this.cctv = cctv;
@@ -35,127 +32,146 @@ public class CCTVUI {
 		this.alarm = alarm;
 	}
 	
+	public void attachClock(ClockPublish clock) {
+		this.clock = clock;
+	} 
+	
 	public void startUI() {
 		try {
-	
-		this.frame = new JFrame();
+			this.frame = new JFrame();
 		
-		this.turnOnBtn = new JButton("Turn On");
-		this.turnOnBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				cctv.turnOn();
-				detectedBtn.setEnabled(true);
-				notDetectedBtn.setEnabled(true);
-				cctvOnOffLabel.setText("CCTV Turned On");
-				cctvDetectedLabel.setText("Intruder not Detected");
-				cctvDetectedLabel.setVisible(true);
-			}
-		});
-		this.turnOffBtn = new JButton("Turn Off");
-		this.turnOffBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				cctv.turnOff();
-				cctv.setDetected(false);
-				detectedBtn.setEnabled(false);
-				notDetectedBtn.setEnabled(false);
-				cctvDetectedLabel.setText("Intruder not Detected");
-				cctvDetectedLabel.setVisible(false);
-				cctvOnOffLabel.setText("CCTV Turned Off");
-			}
-		});
-		this.detectedBtn = new JButton("Detect");
-		this.detectedBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				cctv.setDetected(true);
-				if(alarm != null) {
-					alarm.setRinging(true);	
+			this.turnOnBtn = new JButton("Turn On");
+			this.turnOnBtn.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					cctv.turnOn();
+					detectedBtn.setEnabled(true);
+					notDetectedBtn.setEnabled(true);
+					cctvOnOffLabel.setText("CCTV Turned On");
+					if(cctv.getDetected() == false) {
+						cctvDetectedLabel.setText("Intruder not Detected");						
+					}
+					cctvDetectedLabel.setVisible(true);
+				}
+			});
+			this.turnOffBtn = new JButton("Turn Off");
+			this.turnOffBtn.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					cctv.turnOff();
+					cctv.setDetected(false);
+					detectedBtn.setEnabled(false);
+					notDetectedBtn.setEnabled(false);
+					cctvDetectedLabel.setText("Intruder not Detected");
+					cctvDetectedLabel.setVisible(false);
+					cctvOnOffLabel.setText("CCTV Turned Off");
+				}
+			});
+			this.detectedBtn = new JButton("Detect");
+			this.detectedBtn.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					cctv.setDetected(true);
+					if(clock != null) {
+						System.out.println(clock.getTime() + " : Intruder Detected");
+					}
+					if(alarm != null) {
+						alarm.setRinging(true);	
+						alarmStatusLabel.setText("Alarm Ringing");
+						if(clock != null) {
+							System.out.println(clock.getTime() + " : Alarm Rang");							
+						}
+					}
+					cctvDetectedLabel.setText("Intruder Detected");
+				}
+			});
+			this.notDetectedBtn = new JButton("Not Detect");
+			this.notDetectedBtn.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					cctv.setDetected(false);
+					if(alarm != null) {
+						alarm.setRinging(false);
+					}
+					cctvDetectedLabel.setText("Intruder not Detected");
+				}
+			});
+			this.turnOnAlarmBtn = new JButton("Alarm Turn On");
+			this.turnOnAlarmBtn.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					alarm.setRinging(true);
 					alarmStatusLabel.setText("Alarm Ringing");
+					if(clock != null) {
+						System.out.println(clock.getTime() + " : Alarm Rang");
+					}
 				}
-				cctvDetectedLabel.setText("Intruder Detected");
-			}
-		});
-		this.notDetectedBtn = new JButton("Not Detect");
-		this.notDetectedBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				cctv.setDetected(false);
-				if(alarm != null) {
+			});
+			this.turnOffAlarmBtn = new JButton("Alarm Turn Off");
+			this.turnOffAlarmBtn.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
 					alarm.setRinging(false);
+					alarmStatusLabel.setText("Alarm not Ringing");
+					if(clock != null) {
+						System.out.println(clock.getTime() + " : Alarm Turned off");
+					}
+					if(cctv != null) {
+						cctv.setDetected(false);
+					}
 				}
-				cctvDetectedLabel.setText("Intruder not Detected");
-			}
-		});
-		this.turnOnAlarmBtn = new JButton("Alarm Turn On");
-		this.turnOnAlarmBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				alarm.setRinging(true);
-				alarmStatusLabel.setText("Alarm Ringing");
-			}
-		});
-		this.turnOffAlarmBtn = new JButton("Alarm Turn Off");
-		this.turnOffAlarmBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				alarm.setRinging(false);
-				alarmStatusLabel.setText("Alarm not Ringing");
-				cctv.setDetected(false);
-			}
-		});
-		this.btnCtrlPanel = new JPanel();
-		//this.btnCtrlPanel.setBounds(10,10,200,200);  
-		this.btnCtrlPanel.add(turnOnBtn);
-		this.btnCtrlPanel.add(detectedBtn);
-		this.btnCtrlPanel.add(turnOnAlarmBtn);
-		this.btnCtrlPanel.add(turnOffBtn);
-		this.btnCtrlPanel.add(notDetectedBtn);
-		this.btnCtrlPanel.add(turnOffAlarmBtn);
-		this.btnCtrlPanel.setLayout(new GridLayout(2,3));
-		
-		this.cctvOnOffLabel = new JLabel();
-		this.cctvOnOffLabel.setText("CCTV Turned Off");
-		this.cctvDetectedLabel = new JLabel();
-		this.cctvDetectedLabel.setText("Intruder not Detected");
-		this.alarmStatusLabel = new JLabel();
-		this.alarmStatusLabel.setText("Alarm not Ringing");
-		this.alarmStatusLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		this.cctvDetectedLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		this.cctvOnOffLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		this.infoPanel = new JPanel();
-		//this.infoPanel.setBounds(10,10,200,200); 
-		this.infoPanel.setLayout(new GridLayout(1,3));
-		this.infoPanel.add(cctvOnOffLabel);
-		this.infoPanel.add(cctvDetectedLabel);
-		this.infoPanel.add(alarmStatusLabel);
-		
-		this.detectedBtn.setEnabled(false);
-		this.notDetectedBtn.setEnabled(false);
-		this.cctvDetectedLabel.setVisible(false);
-		
-//	    this.frame.setSize(500,500);  
-//	    this.frame.setLayout(new GridLayout(2,1));  
-//	    this.frame.add(this.infoPanel);
-//	    this.frame.add(this.btnCtrlPanel);
-//	    this.frame.setVisible(true); 
-		
-		if(this.alarm == null) {
-			this.turnOffAlarmBtn.setVisible(false);
-			this.turnOnAlarmBtn.setVisible(false);
-			this.alarmStatusLabel.setVisible(false);
-		}
-		
-		if(this.cctv == null) {
-			this.notDetectedBtn.setVisible(false);
-			this.detectedBtn.setVisible(false);
-			this.turnOffBtn.setVisible(false);
-			this.turnOnBtn.setVisible(false);
-			this.cctvOnOffLabel.setVisible(false);
+			});
+			this.btnCtrlPanel = new JPanel();
+			//this.btnCtrlPanel.setBounds(10,10,200,200);  
+			this.btnCtrlPanel.add(turnOnBtn);
+			this.btnCtrlPanel.add(detectedBtn);
+			this.btnCtrlPanel.add(turnOnAlarmBtn);
+			this.btnCtrlPanel.add(turnOffBtn);
+			this.btnCtrlPanel.add(notDetectedBtn);
+			this.btnCtrlPanel.add(turnOffAlarmBtn);
+			this.btnCtrlPanel.setLayout(new GridLayout(2,3));
+			
+			this.cctvOnOffLabel = new JLabel();
+			this.cctvOnOffLabel.setText("CCTV Turned Off");
+			this.cctvDetectedLabel = new JLabel();
+			this.cctvDetectedLabel.setText("Intruder not Detected");
+			this.alarmStatusLabel = new JLabel();
+			this.alarmStatusLabel.setText("Alarm not Ringing");
+			this.alarmStatusLabel.setHorizontalAlignment(SwingConstants.CENTER);
+			this.cctvDetectedLabel.setHorizontalAlignment(SwingConstants.CENTER);
+			this.cctvOnOffLabel.setHorizontalAlignment(SwingConstants.CENTER);
+			this.infoPanel = new JPanel();
+			this.infoPanel.setLayout(new GridLayout(1,3));
+			this.infoPanel.add(cctvOnOffLabel);
+			this.infoPanel.add(cctvDetectedLabel);
+			this.infoPanel.add(alarmStatusLabel);
+			
+			this.detectedBtn.setEnabled(false);
+			this.notDetectedBtn.setEnabled(false);
 			this.cctvDetectedLabel.setVisible(false);
-		}
-		
+			
+	//	    this.frame.setSize(500,500);  
+	//	    this.frame.setLayout(new GridLayout(2,1));  
+	//	    this.frame.add(this.infoPanel);
+	//	    this.frame.add(this.btnCtrlPanel);
+	//	    this.frame.setVisible(true); 
+			
+			
+			if(this.alarm == null) {
+				this.turnOffAlarmBtn.setVisible(false);
+				this.turnOnAlarmBtn.setVisible(false);
+				this.alarmStatusLabel.setVisible(false);
+			}
+			
+			if(this.cctv == null) {
+				this.notDetectedBtn.setVisible(false);
+				this.detectedBtn.setVisible(false);
+				this.turnOffBtn.setVisible(false);
+				this.turnOnBtn.setVisible(false);
+				this.cctvOnOffLabel.setVisible(false);
+				this.cctvDetectedLabel.setVisible(false);
+			}
+			
 		} catch (Exception e) {
 			System.out.println(e);
 		}
@@ -193,5 +209,7 @@ public class CCTVUI {
 	public boolean getAlarmStatus() {
 		return this.alarm.isRinging();
 	}
+	
+
 	
 }
