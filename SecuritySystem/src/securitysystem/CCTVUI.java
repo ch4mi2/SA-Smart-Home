@@ -48,6 +48,8 @@ public class CCTVUI {
 				detectedBtn.setEnabled(true);
 				notDetectedBtn.setEnabled(true);
 				cctvOnOffLabel.setText("CCTV Turned On");
+				cctvDetectedLabel.setText("Intruder not Detected");
+				cctvDetectedLabel.setVisible(true);
 			}
 		});
 		this.turnOffBtn = new JButton("Turn Off");
@@ -58,7 +60,8 @@ public class CCTVUI {
 				cctv.setDetected(false);
 				detectedBtn.setEnabled(false);
 				notDetectedBtn.setEnabled(false);
-				cctvDetectedLabel.setText("");
+				cctvDetectedLabel.setText("Intruder not Detected");
+				cctvDetectedLabel.setVisible(false);
 				cctvOnOffLabel.setText("CCTV Turned Off");
 			}
 		});
@@ -68,7 +71,8 @@ public class CCTVUI {
 			public void actionPerformed(ActionEvent e) {
 				cctv.setDetected(true);
 				if(alarm != null) {
-					alarm.setRinging(true);					
+					alarm.setRinging(true);	
+					alarmStatusLabel.setText("Alarm Ringing");
 				}
 				cctvDetectedLabel.setText("Intruder Detected");
 			}
@@ -89,6 +93,7 @@ public class CCTVUI {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				alarm.setRinging(true);
+				alarmStatusLabel.setText("Alarm Ringing");
 			}
 		});
 		this.turnOffAlarmBtn = new JButton("Alarm Turn Off");
@@ -96,6 +101,7 @@ public class CCTVUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				alarm.setRinging(false);
+				alarmStatusLabel.setText("Alarm not Ringing");
 				cctv.setDetected(false);
 			}
 		});
@@ -110,8 +116,11 @@ public class CCTVUI {
 		this.btnCtrlPanel.setLayout(new GridLayout(2,3));
 		
 		this.cctvOnOffLabel = new JLabel();
+		this.cctvOnOffLabel.setText("CCTV Turned Off");
 		this.cctvDetectedLabel = new JLabel();
+		this.cctvDetectedLabel.setText("Intruder not Detected");
 		this.alarmStatusLabel = new JLabel();
+		this.alarmStatusLabel.setText("Alarm not Ringing");
 		this.alarmStatusLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		this.cctvDetectedLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		this.cctvOnOffLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -121,6 +130,10 @@ public class CCTVUI {
 		this.infoPanel.add(cctvOnOffLabel);
 		this.infoPanel.add(cctvDetectedLabel);
 		this.infoPanel.add(alarmStatusLabel);
+		
+		this.detectedBtn.setEnabled(false);
+		this.notDetectedBtn.setEnabled(false);
+		this.cctvDetectedLabel.setVisible(false);
 		
 //	    this.frame.setSize(500,500);  
 //	    this.frame.setLayout(new GridLayout(2,1));  
@@ -162,6 +175,14 @@ public class CCTVUI {
 	
 	public JFrame getFrame() {
 		return this.frame;
+	}
+	
+	public boolean setAlarm(boolean val) {
+		if(this.alarm != null) {
+			this.alarm.setRinging(val);
+			return this.alarm.isRinging();
+		} 
+		return false;
 	}
 	
 	
