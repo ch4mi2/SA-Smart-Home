@@ -6,7 +6,9 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: securitysystem.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: SecuritySystem
-Import-Package: cctvpublisher,
+Import-Package: alarmpublisher,
+ cctvpublisher,
+ clockpublisher,
  org.osgi.framework;version="1.3.0"
 Bundle-ActivationPolicy: lazy
 Export-Package: securitysystem

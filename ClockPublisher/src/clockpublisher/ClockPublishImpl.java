@@ -25,4 +25,13 @@ public class ClockPublishImpl implements ClockPublish {
     public double getMilliSeconds() {
     	return System.currentTimeMillis() - startTime;
     }
+
+    @Override
+    public int getHours() {
+        long elapsedTime = System.currentTimeMillis() - startTime;
+        // Calculate the simulated time based on elapsed time and scale factor
+        long simulatedTime = (elapsedTime * 24) / SIMULATED_DAY_MILLISECONDS; // 24 hours
+        
+        return (int) simulatedTime;
+    }
 }
