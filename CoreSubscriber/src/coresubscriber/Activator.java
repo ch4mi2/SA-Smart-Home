@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -39,6 +40,8 @@ public class Activator implements BundleActivator {
 			clockServiceReference = bundleContext.getServiceReference(ClockPublish.class.getName());
 			clock =  (ClockPublish) bundleContext.getService(clockServiceReference);
 			JLabel time = new JLabel();
+			time.setHorizontalAlignment(SwingConstants.CENTER);
+			time.setVerticalAlignment(SwingConstants.CENTER);
 			Thread thread = new Thread(() -> {
 				while(true) {
 					time.setText(clock.getTime());

@@ -38,6 +38,7 @@ public class TempControlUI {
 		targetTempPanel = new JPanel();
 		targetTemp = new JLabel();
 		targetTemp.setHorizontalAlignment(SwingConstants.CENTER);
+		targetTemp.setVerticalAlignment(SwingConstants.CENTER);
 		targetTemp.setText(String.format("%.2f",unit.getRequiredTemperature()) + " C");
 		targetTempPanel.setBorder(BorderFactory.createTitledBorder("Target Temperature"));
 		targetTempPanel.add(targetTemp);
@@ -45,6 +46,7 @@ public class TempControlUI {
 		currentTempPanel = new JPanel();
 		currentTemp = new JLabel();
 		currentTemp.setHorizontalAlignment(SwingConstants.CENTER);
+		currentTemp.setVerticalAlignment(SwingConstants.CENTER);
 		currentTempPanel.setBorder(BorderFactory.createTitledBorder("Current Temperature"));
 		currentTempPanel.add(currentTemp);
 		
@@ -52,6 +54,7 @@ public class TempControlUI {
 		power = new JLabel();
 		power.setText("0");
 		power.setHorizontalAlignment(SwingConstants.CENTER);
+		power.setVerticalAlignment(SwingConstants.CENTER);
 		powerPanel.setBorder(BorderFactory.createTitledBorder("Working Power"));
 		powerPanel.add(power);
 		
@@ -65,6 +68,7 @@ public class TempControlUI {
 		unitToggle = new JButton();
 		unitToggle.setText(setButtonText(unit.getStatus()));
 		inTargetTemp = new JTextField();
+		inTargetTemp.setHorizontalAlignment(SwingConstants.CENTER);
 		inTargetTemp.addActionListener(new ActionListener() {
 			
 			@Override
