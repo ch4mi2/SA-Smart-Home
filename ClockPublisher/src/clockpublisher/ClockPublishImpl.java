@@ -22,6 +22,10 @@ public class ClockPublishImpl implements ClockPublish {
         return formatter.format(new Date(simulatedTime));
     }
     
+    public double getMilliSeconds() {
+    	return System.currentTimeMillis() - startTime;
+    }
+
     @Override
     public int getHours() {
         long elapsedTime = System.currentTimeMillis() - startTime;

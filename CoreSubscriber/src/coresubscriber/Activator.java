@@ -14,6 +14,7 @@ import org.osgi.framework.ServiceReference;
 
 import clockpublisher.ClockPublish;
 import securitysystem.CCTVUI;
+import temperaturecontrolunit.TempControlUI;
 
 
 public class Activator implements BundleActivator {
@@ -21,6 +22,7 @@ public class Activator implements BundleActivator {
 	ServiceReference<?> clockServiceReference;
 	ServiceReference<?> serviceReference2;
 	ServiceReference<?> cctvUIserviceReference;
+	ServiceReference<?> temperatureControlReference;
 	JFrame mainFrame = new JFrame();
 	ClockPublish clock;
 
@@ -45,6 +47,9 @@ public class Activator implements BundleActivator {
 			System.out.println(e);
 		}
 		
+		temperatureControlReference = bundleContext.getServiceReference(TempControlUI.class.getName());
+		TempControlUI tempUI = (TempControlUI) bundleContext.getService(temperatureControlReference);
+		tempUI.startUI();
 		// Clock Service
 		try {
 			clockServiceReference = bundleContext.getServiceReference(ClockPublish.class.getName());
@@ -61,8 +66,9 @@ public class Activator implements BundleActivator {
 			System.out.println(e);
 		}
 		
+		mainFrame.add(tempUI.getTempPanel());
 		mainFrame.setSize(500,500);  
-		mainFrame.setLayout(new GridLayout(2,1));  
+		mainFrame.setLayout(new GridLayout(3,1));  
 		mainFrame.setVisible(true);
 	}
 
