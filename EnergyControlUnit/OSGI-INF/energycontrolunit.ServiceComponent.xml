@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="energycontrolunit.ServiceComponent">
+   <property name="event.topics">org/osgi/framework/BundleEvent/solarStatus
+org/osgi/framework/BundleEvent/batteryStatus
+   </property>
+   <service>
+      <provide interface="org.osgi.service.event.EventHandler"/>
+   </service>
+   <implementation class="energycontrolunit.ServiceComponent"/>
+</scr:component>
