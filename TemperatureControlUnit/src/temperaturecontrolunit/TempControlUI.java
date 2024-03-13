@@ -71,7 +71,7 @@ public class TempControlUI {
 			public void actionPerformed(ActionEvent e) {
 				if(!inTargetTemp.getText().isEmpty()) {
 					unit.setRequiredTemperature(Double.parseDouble(inTargetTemp.getText()));
-					targetTemp.setText(inTargetTemp.getText() + " C");
+					targetTemp.setText(String.format("%.2f",unit.getRequiredTemperature()) + " C");
 					inTargetTemp.setText("");
 				}
 			}
@@ -116,9 +116,9 @@ public class TempControlUI {
 	
 	private String setButtonText(boolean condition) {
 		if (condition) {
-			return "Off";
+			return "Turn Off";
 		} else {
-			return "On";
+			return "Turn On";
 		}
 	}
 }
