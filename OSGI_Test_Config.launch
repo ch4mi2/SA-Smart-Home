@@ -15,6 +15,7 @@
     <setAttribute key="deselected_workspace_bundles">
         <setEntry value="SecuritySystemControlUnit"/>
         <setEntry value="SecuritySystemProvider"/>
+        <setEntry value="ServicePublisher"/>
     </setAttribute>
     <booleanAttribute key="includeOptional" value="false"/>
     <booleanAttribute key="org.eclipse.debug.core.ATTR_FORCE_SYSTEM_CONSOLE_ENCODING" value="false"/>

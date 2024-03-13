@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: TemperatureSensor
+Bundle-SymbolicName: TemperatureSensor
+Bundle-Version: 1.0.0.qualifier
+Export-Package: temperaturesensor
+Bundle-Activator: temperaturesensor.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: TemperatureSensor
+Import-Package: org.osgi.framework;version="1.3.0",
+ org.osgi.service.event;version="1.4.1",
+ org.osgi.util.tracker;version="1.5.3"
+Bundle-ActivationPolicy: lazy
