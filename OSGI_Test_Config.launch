@@ -38,8 +38,8 @@
         <setEntry value="org.osgi.service.event"/>
     </setAttribute>
     <setAttribute key="selected_workspace_bundles">
+        <setEntry value="TemperatureControlUnit"/>
         <setEntry value="TemperatureSensor"/>
-        <setEntry value="TestEvents"/>
     </setAttribute>
     <booleanAttribute key="show_selected_only" value="true"/>
     <booleanAttribute key="tracing" value="false"/>
