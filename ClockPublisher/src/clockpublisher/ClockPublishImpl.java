@@ -21,4 +21,8 @@ public class ClockPublishImpl implements ClockPublish {
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
         return formatter.format(new Date(simulatedTime));
     }
+    
+    public double getMilliSeconds() {
+    	return System.currentTimeMillis() - startTime;
+    }
 }

@@ -9,6 +9,7 @@ Automatic-Module-Name: CoreSubscriber
 Import-Package: cctvpublisher,
  clockpublisher,
  org.osgi.framework;version="1.3.0",
- securitysystem
+ securitysystem,
+ temperaturecontrolunit
 Bundle-ActivationPolicy: lazy
 
