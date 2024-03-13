@@ -9,7 +9,7 @@ public class Activator implements BundleActivator {
 	ServiceRegistration publishServiceRegistration;
 	@Override
 	public void start(BundleContext context) throws Exception {
-		System.out.println("Publisher Start");
+		System.out.println("Light Publisher Start");
 		LightPublish publisherService = new LightPublishImpl();
 		publishServiceRegistration = context.registerService(
 				LightPublish.class.getName(), publisherService, null);
@@ -17,7 +17,7 @@ public class Activator implements BundleActivator {
 	
 	@Override
 	public void stop(BundleContext context) throws Exception {
-		System.out.println("Publisher Stop");
+		System.out.println("Light Publisher Stop");
 		publishServiceRegistration.unregister();
 	}
 
