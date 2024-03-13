@@ -8,6 +8,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -87,7 +88,11 @@ public class TempControlUI {
 				if(unit.getStatus()) {
 					unit.turnOff();
 				} else {
-					unit.turnOn();
+					if(unit.getBatteryStatus() != null && unit.getBatteryStatus().equals("Power off")) {
+						JOptionPane.showMessageDialog(null, "Power cannot be turned on due to energy levels");
+					} else {
+						unit.turnOn();
+					}
 				}
 				unitToggle.setText(setButtonText(unit.getStatus()));
 			}
@@ -100,7 +105,7 @@ public class TempControlUI {
 		tempPanel.setBorder(BorderFactory.createTitledBorder("Temperature Control Unit"));
 		tempPanel.add(statsPanel);
 		tempPanel.add(commandPanel);
-		tempPanel.setLayout(new GridLayout(2,1, 20,20));
+		tempPanel.setLayout(new GridLayout(2,1, 20,5));
 	}
 	
 	public void updateUI() {			
@@ -108,6 +113,8 @@ public class TempControlUI {
 			currentTemp.setText(String.format("%.2f",unit.getCurrentTemp()) + " C");
 		if(power != null)
 			power.setText(Integer.toString(unit.getPower())+ " W");
+		if(unitToggle != null)
+			unitToggle.setText(setButtonText(unit.getStatus()));
 	}
 	
 	public void stopUI() {

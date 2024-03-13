@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="temperaturecontrolunit.ServiceComponent">
-   <property name="event.topics" value="org/osgi/framework/BundleEvent/temp"/>
+   <property name="event.topics">org/osgi/framework/BundleEvent/temp
+org/osgi/framework/BundleEvent/batteryStatus
+org/osgi/framework/BundleEvent/solarStatus
+   </property>
    <service>
       <provide interface="org.osgi.service.event.EventHandler"/>
    </service>

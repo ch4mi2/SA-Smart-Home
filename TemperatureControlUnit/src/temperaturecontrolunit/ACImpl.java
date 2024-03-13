@@ -15,6 +15,7 @@ public class ACImpl implements AC {
 	int power;
 	double currentTemperature;
 	double requiredTemperature = 28;
+	String batteryStatus;
 	
 	public void setPower(int power) {
 		this.power = power;
@@ -78,8 +79,8 @@ public class ACImpl implements AC {
 
 	@Override
 	public void turnOff() {
-		setPower(0);
 		this.unitOn = false;
+		setPower(0);
 		System.out.println(clock.getTime() + " : Unit Turned Off");
 	}
 	
@@ -113,6 +114,16 @@ public class ACImpl implements AC {
 	@Override
 	public boolean getStatus() {
 		return this.unitOn;
+	}
+
+	@Override
+	public String getBatteryStatus() {
+		return this.batteryStatus;
+	}
+
+	@Override
+	public void setBatteryStatus(String status) {
+		this.batteryStatus = status;
 	}
 
 
