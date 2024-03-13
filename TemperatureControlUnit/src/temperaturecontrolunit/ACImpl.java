@@ -27,6 +27,9 @@ public class ACImpl implements AC {
 		} else {
 			sensorThread.changeTemperature(0);
 		}
+		if (this.power == 0 && this.unitOn) {
+			System.out.println(clock.getTime() + ": Unit in Sleep mode");
+		}
 	}
 	
 	@Override
@@ -68,7 +71,7 @@ public class ACImpl implements AC {
 			} else if (tempDif > 0 ) {
 				setPower(25);
 			} else {
-				setPower(0);
+				setPower(0);				
 			}
 		}
 	}
@@ -77,11 +80,13 @@ public class ACImpl implements AC {
 	public void turnOff() {
 		setPower(0);
 		this.unitOn = false;
+		System.out.println(clock.getTime() + ": Unit Turned Off");
 	}
 	
 	@Override
 	public void turnOn() {
 		this.unitOn = true;
+		System.out.println(clock.getTime() + ": Unit Turned On");
 	}
 
 	@Override
@@ -102,6 +107,7 @@ public class ACImpl implements AC {
 	@Override
 	public void setRequiredTemperature(double requiredTemperature) {
 		this.requiredTemperature = requiredTemperature;
+		System.out.println(clock.getTime() + ": Target Temperature Changed to -> " + requiredTemperature);
 	}
 
 	@Override

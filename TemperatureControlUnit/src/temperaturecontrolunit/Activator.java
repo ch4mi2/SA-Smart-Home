@@ -26,6 +26,7 @@ public class Activator implements BundleActivator {
 	}
 
 	public void start(BundleContext bundleContext) throws Exception {
+		System.out.println("TCU started");
 		Activator.context = bundleContext;
 		clockServiceTracker = 
 				new ServiceTracker<ClockPublish, Object>(bundleContext, ClockPublish.class.getName(), null);
@@ -45,7 +46,6 @@ public class Activator implements BundleActivator {
 		UI.attachUnit(unit);
 		
 		tempUIService = bundleContext.registerService(TempControlUI.class.getName(), UI, null);
-		
 	}
 
 	public void stop(BundleContext bundleContext) throws Exception {

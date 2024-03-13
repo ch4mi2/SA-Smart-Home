@@ -41,7 +41,7 @@ class SensorComponent implements Runnable {
 
     private double generateSensorReading() {
         // Implement sensor reading logic here
-    	int randomNum = (int) (Math.random() * (60 - 25)) + 25;
+    	int randomNum = (int) (Math.random() * (80 - 25)) + 25;
         if( AC_On || temp >= randomNum) {
         	if( amountChanged != 0 ) {
         		temp -= amountChanged;

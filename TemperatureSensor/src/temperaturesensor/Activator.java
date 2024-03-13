@@ -15,6 +15,7 @@ public class Activator implements BundleActivator {
 	}
 
 	public void start(BundleContext bundleContext) throws Exception {
+		System.out.println("Started Monitoring Temperature");
 		Activator.context = bundleContext;
 		SensorComponent sensorComponent = new SensorComponent(bundleContext, 2000);
 		sensorThread = new Thread(sensorComponent);
@@ -22,7 +23,6 @@ public class Activator implements BundleActivator {
 		SensorThread sensorthread = new SensorThreadImpl(sensorComponent);
 		sensorService = bundleContext.registerService(
 				SensorThread.class.getName(), sensorthread, null);
-		System.out.println("Started Monitoring Temperature");
 	}
 
 	public void stop(BundleContext bundleContext) throws Exception {

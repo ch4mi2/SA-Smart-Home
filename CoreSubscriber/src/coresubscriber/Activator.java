@@ -3,6 +3,7 @@ package coresubscriber;
 
 import java.awt.GridLayout;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,7 +24,8 @@ public class Activator implements BundleActivator {
 	ServiceReference<?> serviceReference2;
 	ServiceReference<?> cctvUIserviceReference;
 	ServiceReference<?> temperatureControlReference;
-	JFrame mainFrame = new JFrame();
+	JFrame mainFrame = new JFrame("Smart Home Dashboard");
+	JPanel container = new JPanel();
 	ClockPublish clock;
 
 
@@ -31,25 +33,7 @@ public class Activator implements BundleActivator {
 		System.out.println("Core started");
 //		serviceReference = bundleContext.getServiceReference(LightPublish.class.getName());
 //		LightPublish lightPublish = (LightPublish) bundleContext.getService(serviceReference);
-//		
-		// Security Service
-		try {
-			cctvUIserviceReference = bundleContext.getServiceReference(CCTVUI.class.getName());
-			CCTVUI cctvUI = (CCTVUI) bundleContext.getService(cctvUIserviceReference);
-			cctvUI.startUI();
-			JPanel SecurityPanel = new JPanel();
-			SecurityPanel.setLayout(new GridLayout(2,1));
-			SecurityPanel.setSize(300,300);  
-			SecurityPanel.add(cctvUI.getInfoPanel());
-			SecurityPanel.add(cctvUI.getBtnPanel());
-			mainFrame.add(SecurityPanel);
-		} catch (Exception e) {
-			System.out.println(e);
-		}
 		
-		temperatureControlReference = bundleContext.getServiceReference(TempControlUI.class.getName());
-		TempControlUI tempUI = (TempControlUI) bundleContext.getService(temperatureControlReference);
-		tempUI.startUI();
 		// Clock Service
 		try {
 			clockServiceReference = bundleContext.getServiceReference(ClockPublish.class.getName());
@@ -61,14 +45,40 @@ public class Activator implements BundleActivator {
 				}
 			});
 			thread.start();
-			mainFrame.add(time);
+			container.add(time);
 		} catch (Exception e) {
 			System.out.println(e);
 		}
 		
-		mainFrame.add(tempUI.getTempPanel());
+		// Security Service
+		try {
+			cctvUIserviceReference = bundleContext.getServiceReference(CCTVUI.class.getName());
+			CCTVUI cctvUI = (CCTVUI) bundleContext.getService(cctvUIserviceReference);
+			cctvUI.startUI();
+			JPanel SecurityPanel = new JPanel();
+			SecurityPanel.setLayout(new GridLayout(2,1));
+			SecurityPanel.setSize(300,300);  
+			SecurityPanel.add(cctvUI.getInfoPanel());
+			SecurityPanel.add(cctvUI.getBtnPanel());
+			container.add(SecurityPanel);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		// TCU 
+		try {
+			temperatureControlReference = bundleContext.getServiceReference(TempControlUI.class.getName());
+			TempControlUI tempUI = (TempControlUI) bundleContext.getService(temperatureControlReference);
+			tempUI.startUI();
+			container.add(tempUI.getTempPanel());
+		} catch(NullPointerException e) {
+			System.out.println(e.getLocalizedMessage() + ": TCU not availabe");
+		}
+		
+		container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS)); 
+		
 		mainFrame.setSize(500,500);  
-		mainFrame.setLayout(new GridLayout(3,1));  
+		mainFrame.add(container);
 		mainFrame.setVisible(true);
 	}
 
