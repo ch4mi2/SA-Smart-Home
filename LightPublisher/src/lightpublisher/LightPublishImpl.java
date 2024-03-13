@@ -54,4 +54,9 @@ public class LightPublishImpl implements LightPublish {
     public boolean getAlert() {
     	return alert;
     }
+
+	@Override
+	public void setBrightness(int brightness) {
+		this.brightness = brightness;
+	}
 }
