@@ -14,7 +14,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 public class TempControlUI {
-	JFrame frame;
 	JPanel statsPanel;
 	JPanel targetTempPanel;
 	JPanel currentTempPanel;
@@ -33,9 +32,7 @@ public class TempControlUI {
 	}
 
 	public void startUI() { 
-		frame = new JFrame("Tenmperature Control Unit");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+	
 		targetTempPanel = new JPanel();
 		targetTemp = new JLabel();
 		targetTemp.setHorizontalAlignment(SwingConstants.CENTER);
@@ -43,6 +40,7 @@ public class TempControlUI {
 		targetTemp.setText(String.format("%.2f",unit.getRequiredTemperature()) + " C");
 		targetTempPanel.setBorder(BorderFactory.createTitledBorder("Target Temperature"));
 		targetTempPanel.add(targetTemp);
+		targetTempPanel.setLayout(new GridLayout(1,1));
 		
 		currentTempPanel = new JPanel();
 		currentTemp = new JLabel();
@@ -50,6 +48,7 @@ public class TempControlUI {
 		currentTemp.setVerticalAlignment(SwingConstants.CENTER);
 		currentTempPanel.setBorder(BorderFactory.createTitledBorder("Current Temperature"));
 		currentTempPanel.add(currentTemp);
+		currentTempPanel.setLayout(new GridLayout(1,1));
 		
 		powerPanel = new JPanel();
 		power = new JLabel();
@@ -58,6 +57,7 @@ public class TempControlUI {
 		power.setVerticalAlignment(SwingConstants.CENTER);
 		powerPanel.setBorder(BorderFactory.createTitledBorder("Working Power"));
 		powerPanel.add(power);
+		powerPanel.setLayout(new GridLayout(1,1));
 		
 		statsPanel = new JPanel();
 		statsPanel.add(targetTempPanel);
@@ -118,7 +118,7 @@ public class TempControlUI {
 	}
 	
 	public void stopUI() {
-		this.frame.setVisible(false);
+		this.tempPanel.setVisible(false);
 	}
 	
 	public JPanel getTempPanel() {
