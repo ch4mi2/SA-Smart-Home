@@ -15,6 +15,7 @@ public class ACImpl implements AC {
 	int power;
 	double currentTemperature;
 	double requiredTemperature = 28;
+	String batteryStatus;
 	
 	public void setPower(int power) {
 		this.power = power;
@@ -28,7 +29,7 @@ public class ACImpl implements AC {
 			sensorThread.changeTemperature(0);
 		}
 		if (this.power == 0 && this.unitOn) {
-			System.out.println(clock.getTime() + ": Unit in Sleep mode");
+			System.out.println(clock.getTime() + " : Unit in Sleep mode");
 		}
 	}
 	
@@ -78,15 +79,15 @@ public class ACImpl implements AC {
 
 	@Override
 	public void turnOff() {
-		setPower(0);
 		this.unitOn = false;
-		System.out.println(clock.getTime() + ": Unit Turned Off");
+		setPower(0);
+		System.out.println(clock.getTime() + " : Unit Turned Off");
 	}
 	
 	@Override
 	public void turnOn() {
 		this.unitOn = true;
-		System.out.println(clock.getTime() + ": Unit Turned On");
+		System.out.println(clock.getTime() + " : Unit Turned On");
 	}
 
 	@Override
@@ -107,12 +108,22 @@ public class ACImpl implements AC {
 	@Override
 	public void setRequiredTemperature(double requiredTemperature) {
 		this.requiredTemperature = requiredTemperature;
-		System.out.println(clock.getTime() + ": Target Temperature Changed to -> " + requiredTemperature);
+		System.out.println(clock.getTime() + " : Target Temperature Changed to -> " + requiredTemperature);
 	}
 
 	@Override
 	public boolean getStatus() {
 		return this.unitOn;
+	}
+
+	@Override
+	public String getBatteryStatus() {
+		return this.batteryStatus;
+	}
+
+	@Override
+	public void setBatteryStatus(String status) {
+		this.batteryStatus = status;
 	}
 
 

@@ -20,6 +20,10 @@ public class CCTVUI {
 	JLabel cctvOnOffLabel;
 	JLabel cctvDetectedLabel;
 	JPanel infoPanel;
+	JPanel cctvBtnPanel;
+	JPanel cctvLabelPanel;
+	JPanel alarmBtnPanel;
+	JPanel alarmLabelPanel;
 	CCTV cctv;
 	Alarm alarm;
 	ClockPublish clock;
@@ -122,14 +126,25 @@ public class CCTVUI {
 				}
 			});
 			this.btnCtrlPanel = new JPanel();
-			//this.btnCtrlPanel.setBounds(10,10,200,200);  
-			this.btnCtrlPanel.add(turnOnBtn);
-			this.btnCtrlPanel.add(detectedBtn);
-			this.btnCtrlPanel.add(turnOnAlarmBtn);
-			this.btnCtrlPanel.add(turnOffBtn);
-			this.btnCtrlPanel.add(notDetectedBtn);
-			this.btnCtrlPanel.add(turnOffAlarmBtn);
-			this.btnCtrlPanel.setLayout(new GridLayout(2,3));
+
+			this.cctvBtnPanel = new JPanel();
+			this.cctvBtnPanel.setBorder(BorderFactory.createTitledBorder("CCTV Controller"));
+			this.cctvBtnPanel.add(turnOnBtn);
+			this.cctvBtnPanel.add(detectedBtn);
+			this.cctvBtnPanel.add(turnOffBtn);
+			this.cctvBtnPanel.add(notDetectedBtn);
+			this.cctvBtnPanel.setLayout(new GridLayout(2,2,10,10));
+			
+			
+			this.alarmBtnPanel = new JPanel();
+			this.alarmBtnPanel.add(turnOnAlarmBtn);
+			this.alarmBtnPanel.add(turnOffAlarmBtn);
+			this.alarmBtnPanel.setBorder(BorderFactory.createTitledBorder("Alarm Controller"));
+			this.alarmBtnPanel.setLayout(new GridLayout(1,2,10,10));
+
+			this.btnCtrlPanel.setLayout(new GridLayout(1,2));
+			this.btnCtrlPanel.add(cctvBtnPanel);
+			this.btnCtrlPanel.add(alarmBtnPanel);
 			
 			this.cctvOnOffLabel = new JLabel();
 			this.cctvOnOffLabel.setText("CCTV Turned Off");
@@ -139,22 +154,29 @@ public class CCTVUI {
 			this.alarmStatusLabel.setText("Alarm not Ringing");
 			this.alarmStatusLabel.setHorizontalAlignment(SwingConstants.CENTER);
 			this.cctvDetectedLabel.setHorizontalAlignment(SwingConstants.CENTER);
+			this.alarmStatusLabel.setVerticalAlignment(SwingConstants.CENTER);
+			this.cctvDetectedLabel.setVerticalAlignment(SwingConstants.CENTER);
 			this.cctvOnOffLabel.setHorizontalAlignment(SwingConstants.CENTER);
+			
+			this.alarmLabelPanel = new JPanel();
+			this.alarmLabelPanel.setBorder(BorderFactory.createTitledBorder("Alarm Status"));
+			this.alarmLabelPanel.add(alarmStatusLabel);
+			this.alarmLabelPanel.setLayout(new GridLayout(1,1));
+			
+			this.cctvLabelPanel = new JPanel();
+			this.cctvLabelPanel.setBorder(BorderFactory.createTitledBorder("CCTV Status"));
+			this.cctvLabelPanel.setLayout(new GridLayout(1,2));
+			this.cctvLabelPanel.add(cctvOnOffLabel);
+			this.cctvLabelPanel.add(cctvDetectedLabel);
+			
 			this.infoPanel = new JPanel();
-			this.infoPanel.setLayout(new GridLayout(1,3));
-			this.infoPanel.add(cctvOnOffLabel);
-			this.infoPanel.add(cctvDetectedLabel);
-			this.infoPanel.add(alarmStatusLabel);
+			this.infoPanel.setLayout(new GridLayout(1,2));
+			this.infoPanel.add(cctvLabelPanel);
+			this.infoPanel.add(alarmLabelPanel);
 			
 			this.detectedBtn.setEnabled(false);
 			this.notDetectedBtn.setEnabled(false);
 			this.cctvDetectedLabel.setVisible(false);
-			
-	//	    this.frame.setSize(500,500);  
-	//	    this.frame.setLayout(new GridLayout(2,1));  
-	//	    this.frame.add(this.infoPanel);
-	//	    this.frame.add(this.btnCtrlPanel);
-	//	    this.frame.setVisible(true); 
 			
 			
 			if(this.alarm == null) {

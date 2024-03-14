@@ -11,6 +11,7 @@ import org.osgi.framework.ServiceRegistration;
 
 import lightpublisher.LightPublish;
 import lightpublisher.LightPublishImpl;
+import securitysystem.CCTVUI;
 import clockpublisher.ClockPublish;
 
 public class Activator extends JPanel implements BundleActivator {
@@ -25,6 +26,7 @@ public class Activator extends JPanel implements BundleActivator {
     private JPanel colorPanel;
     private ServiceReference lightServiceReference;
     private ServiceReference clockServiceReference;
+    private ServiceReference cctvUIserviceReference;
     private LightPublish lightPublish;
     private ClockPublish clockPublish;
     private boolean lightOverride = false;
@@ -202,14 +204,27 @@ public class Activator extends JPanel implements BundleActivator {
     }
 
     
-    private void checkAlert() {
-        while (true) {
-            if (lightPublish.getAlert()) {
-                Color color = Color.RED; // Set color to red
-                colorPanel.setBackground(color);
+    private void checkAlert(CCTVUI cctvUI) {
+    	
+        Thread alertThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    if (cctvUI.getAlarmStatus()) {
+                        Color color = Color.RED; // Set color to red
+                        colorPanel.setBackground(color);
+                    }
+                    try {
+                        Thread.sleep(0); 
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-        }
+        });
+        alertThread.start();
     }
+
 
     public void start(BundleContext context) throws Exception {
         JFrame frame = new JFrame("Light Subscriber");
@@ -220,13 +235,15 @@ public class Activator extends JPanel implements BundleActivator {
 
         lightServiceReference = context.getServiceReference(LightPublish.class.getName());
         clockServiceReference = context.getServiceReference(ClockPublish.class.getName());
+        cctvUIserviceReference = context.getServiceReference(CCTVUI.class.getName());
+		CCTVUI cctvUI = (CCTVUI) context.getService(cctvUIserviceReference);
 
         if (lightServiceReference != null && clockServiceReference != null) {
             lightPublish = (LightPublish) context.getService(lightServiceReference);
             clockPublish = (ClockPublish) context.getService(clockServiceReference);
             updateLabelsAndColor();
             startTimer();
-            checkAlert();
+            checkAlert(cctvUI);
         } else {
             JOptionPane.showMessageDialog(null, "Failed to retrieve service.");
         }

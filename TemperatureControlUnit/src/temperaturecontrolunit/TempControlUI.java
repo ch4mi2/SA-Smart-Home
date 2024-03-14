@@ -8,12 +8,12 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 public class TempControlUI {
-	JFrame frame;
 	JPanel statsPanel;
 	JPanel targetTempPanel;
 	JPanel currentTempPanel;
@@ -32,28 +32,32 @@ public class TempControlUI {
 	}
 
 	public void startUI() { 
-		frame = new JFrame("Tenmperature Control Unit");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+	
 		targetTempPanel = new JPanel();
 		targetTemp = new JLabel();
 		targetTemp.setHorizontalAlignment(SwingConstants.CENTER);
+		targetTemp.setVerticalAlignment(SwingConstants.CENTER);
 		targetTemp.setText(String.format("%.2f",unit.getRequiredTemperature()) + " C");
 		targetTempPanel.setBorder(BorderFactory.createTitledBorder("Target Temperature"));
 		targetTempPanel.add(targetTemp);
+		targetTempPanel.setLayout(new GridLayout(1,1));
 		
 		currentTempPanel = new JPanel();
 		currentTemp = new JLabel();
 		currentTemp.setHorizontalAlignment(SwingConstants.CENTER);
+		currentTemp.setVerticalAlignment(SwingConstants.CENTER);
 		currentTempPanel.setBorder(BorderFactory.createTitledBorder("Current Temperature"));
 		currentTempPanel.add(currentTemp);
+		currentTempPanel.setLayout(new GridLayout(1,1));
 		
 		powerPanel = new JPanel();
 		power = new JLabel();
 		power.setText("0");
 		power.setHorizontalAlignment(SwingConstants.CENTER);
+		power.setVerticalAlignment(SwingConstants.CENTER);
 		powerPanel.setBorder(BorderFactory.createTitledBorder("Working Power"));
 		powerPanel.add(power);
+		powerPanel.setLayout(new GridLayout(1,1));
 		
 		statsPanel = new JPanel();
 		statsPanel.add(targetTempPanel);
@@ -65,6 +69,7 @@ public class TempControlUI {
 		unitToggle = new JButton();
 		unitToggle.setText(setButtonText(unit.getStatus()));
 		inTargetTemp = new JTextField();
+		inTargetTemp.setHorizontalAlignment(SwingConstants.CENTER);
 		inTargetTemp.addActionListener(new ActionListener() {
 			
 			@Override
@@ -83,7 +88,11 @@ public class TempControlUI {
 				if(unit.getStatus()) {
 					unit.turnOff();
 				} else {
-					unit.turnOn();
+					if(unit.getBatteryStatus() != null && unit.getBatteryStatus().equals("Power off")) {
+						JOptionPane.showMessageDialog(null, "Power cannot be turned on due to energy levels");
+					} else {
+						unit.turnOn();
+					}
 				}
 				unitToggle.setText(setButtonText(unit.getStatus()));
 			}
@@ -96,7 +105,7 @@ public class TempControlUI {
 		tempPanel.setBorder(BorderFactory.createTitledBorder("Temperature Control Unit"));
 		tempPanel.add(statsPanel);
 		tempPanel.add(commandPanel);
-		tempPanel.setLayout(new GridLayout(2,1, 20,20));
+		tempPanel.setLayout(new GridLayout(2,1, 20,5));
 	}
 	
 	public void updateUI() {			
@@ -104,10 +113,12 @@ public class TempControlUI {
 			currentTemp.setText(String.format("%.2f",unit.getCurrentTemp()) + " C");
 		if(power != null)
 			power.setText(Integer.toString(unit.getPower())+ " W");
+		if(unitToggle != null)
+			unitToggle.setText(setButtonText(unit.getStatus()));
 	}
 	
 	public void stopUI() {
-		this.frame.setVisible(false);
+		this.tempPanel.setVisible(false);
 	}
 	
 	public JPanel getTempPanel() {

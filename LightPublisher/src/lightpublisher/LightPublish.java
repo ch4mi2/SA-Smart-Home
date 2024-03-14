@@ -9,4 +9,5 @@ public interface LightPublish {
     public int getBrightness();
     public void setAlert(boolean value);
     public boolean getAlert();
+    public void setBrightness(int brightness);
 }
