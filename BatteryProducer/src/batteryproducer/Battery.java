@@ -1,4 +1,4 @@
-package battery;
+package batteryproducer;
 
 public interface Battery {
 	public void switchOn();

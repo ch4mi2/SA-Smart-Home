@@ -8,6 +8,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: CoreSubscriber
 Import-Package: cctvpublisher,
  clockpublisher,
+ energycontrolunit,
  org.osgi.framework;version="1.3.0",
  securitysystem,
  temperaturecontrolunit

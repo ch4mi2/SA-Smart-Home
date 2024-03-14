@@ -1,4 +1,4 @@
-package solar;
+package solarproducer;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
@@ -26,11 +26,10 @@ public class Solar implements Runnable{
     @Override
     public void run() {
         while (true) {
-        	System.out.println("Running Solar thread");
             boolean solarStatus = generateSolarStatus();
             publishSolarStatus(solarStatus);
             try {
-                Thread.sleep(2000);
+                Thread.sleep(5000);
             } catch (InterruptedException e) {
                 System.out.println("Stopping solar status generator thread");
                 return;

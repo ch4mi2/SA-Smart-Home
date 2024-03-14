@@ -1,6 +1,5 @@
 package energycontrolunit;
 
-import battery.Battery;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
@@ -10,10 +9,13 @@ import org.osgi.service.event.Event;
 import org.osgi.service.event.EventAdmin;
 import org.osgi.service.event.EventHandler;
 
+import batteryproducer.Battery;
+
 @Component(
 	property = {
 		"event.topics=org/osgi/framework/BundleEvent/solarStatus",
-		"event.topics=org/osgi/framework/BundleEvent/batteryStatus"
+		"event.topics=org/osgi/framework/BundleEvent/batteryStatus",
+		"event.topics=org/osgi/framework/BundleEvent/batteryLevel"
 	}
 )
 public class ServiceComponent implements EventHandler {
@@ -36,27 +38,37 @@ public class ServiceComponent implements EventHandler {
 //		Boolean topic = (Boolean) event.getProperty("solarStatus");
 		if("org/osgi/framework/BundleEvent/solarStatus".equals(topic)) {
 			Boolean solarStatus = (Boolean) event.getProperty("solarStatus");
+			if(Activator.UI != null && solarStatus != null) {
+				Activator.UI.updateSolarStatus(solarStatus);
+			}
 			if (solarStatus!= null && solarStatus == false)
 			{
-				System.out.println("Solar Status : Off");
 				if(Activator.battery != null && currentBatteryStatus != "Power off") {
-					System.out.println("Turn on the battery.....");
 					Activator.battery.switchOn();
 				}
 			}else 
 			{
 				if(Activator.battery != null) {
 					Activator.battery.switchOff();
-					System.out.println("Solar Status : Active");
 				}	
 			}
 		}
+		
 		if("org/osgi/framework/BundleEvent/batteryStatus".equals(topic)){
 			String batteryStatus = (String) event.getProperty("BatteryStatus");
             if (batteryStatus != null) {
             	currentBatteryStatus = batteryStatus;
-                System.out.println("Battery Status: " + batteryStatus);
+            	if(Activator.UI != null && currentBatteryStatus != null){
+            		Activator.UI.updateBatteryStatus(currentBatteryStatus);
+            	}
             }
+		}
+		
+		if("org/osgi/framework/BundleEvent/batteryLevel".equals(topic)) {
+			Double batteryLevel = (Double) event.getProperty("BatteryLevel");
+			if(Activator.UI != null && batteryLevel != null) {
+				Activator.UI.updateBatteryLevel(batteryLevel);
+			}
 		}
 	}	
 }
