@@ -65,6 +65,7 @@ public class Activator implements BundleActivator {
 			EnergyControlUI UI = (EnergyControlUI) bundleContext.getService(energyControlReference);
 			UI.startUI();
 			container.add(UI.getStatusPanel());
+			container.add(Box.createVerticalGlue());
 		}catch(Exception e) {
 			System.out.println(e);
 		}
@@ -92,7 +93,6 @@ public class Activator implements BundleActivator {
 			TempControlUI tempUI = (TempControlUI) bundleContext.getService(temperatureControlReference);
 			tempUI.startUI();
 			container.add(tempUI.getTempPanel());
-			container.add(Box.createVerticalGlue());
 		} catch(NullPointerException e) {
 			System.out.println(e.getLocalizedMessage() + ": TCU not availabe");
 		}
