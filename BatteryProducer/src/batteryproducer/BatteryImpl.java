@@ -89,9 +89,9 @@ public class BatteryImpl implements Battery {
                     	   publishBatteryLevel(batteryLevel);
                        }
                        if(batteryLevel == 100) {
-                   		publishMessage("Charged");
+                   			publishMessage("Charged");
                    		}else {
-                   		publishMessage("Charging");
+                   			publishMessage("Charging");
                    		}
                     } catch (InterruptedException e) {
                         e.printStackTrace();
