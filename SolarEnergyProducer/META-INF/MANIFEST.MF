@@ -1,13 +1,13 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Solar
-Bundle-SymbolicName: Solar
+Bundle-SymbolicName: SolarEnergyProducer
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: solar.Activator
+Bundle-Activator: solarproducer.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: Solar
 Import-Package: org.osgi.framework;version="1.3.0",
  org.osgi.service.event;version="1.4.0",
  org.osgi.util.tracker;version="1.5.2"
 Bundle-ActivationPolicy: lazy
-Export-Package: solar
+Export-Package: solarproducer

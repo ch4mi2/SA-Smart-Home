@@ -1,4 +1,4 @@
-package battery;
+package batteryproducer;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;

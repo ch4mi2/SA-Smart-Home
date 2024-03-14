@@ -18,6 +18,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
 import clockpublisher.ClockPublish;
+import energycontrolunit.EnergyControlUI;
 import securitysystem.CCTVUI;
 import temperaturecontrolunit.TempControlUI;
 
@@ -28,6 +29,7 @@ public class Activator implements BundleActivator {
 	ServiceReference<?> lightServiceReference;
 	ServiceReference<?> cctvUIserviceReference;
 	ServiceReference<?> temperatureControlReference;
+	ServiceReference<?> energyControlReference;
 	JFrame mainFrame = new JFrame("Smart Home Dashboard");
 	JPanel container = new JPanel();
 	ClockPublish clock;
@@ -54,6 +56,16 @@ public class Activator implements BundleActivator {
 			container.add(time);
 			container.add(Box.createVerticalGlue());
 		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		//energy Service
+		try {
+			energyControlReference = bundleContext.getServiceReference(EnergyControlUI.class.getName());
+			EnergyControlUI UI = (EnergyControlUI) bundleContext.getService(energyControlReference);
+			UI.startUI();
+			container.add(UI.getStatusPanel());
+		}catch(Exception e) {
 			System.out.println(e);
 		}
 		

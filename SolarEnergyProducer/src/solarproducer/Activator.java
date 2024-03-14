@@ -1,4 +1,4 @@
-package solar;
+package solarproducer;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;

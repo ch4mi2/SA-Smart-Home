@@ -1,4 +1,4 @@
-package battery;
+package batteryproducer;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
@@ -12,9 +12,8 @@ public class BatteryImpl implements Battery {
 
 	private boolean isBatteryOn = false;
 	private static double batteryLevel = 100.0;
-	private static boolean OffMessageAt50Sent = false;
-    private static boolean OffMessageAt25Sent = false;
-    private static boolean powerOffMessage = false;
+	private static boolean batteryIncreasing = false;
+	private static boolean batteryDecreasing = false;
 	private final EventAdmin eventAdmin;
 	private String message;
 
@@ -40,28 +39,31 @@ public class BatteryImpl implements Battery {
 	}
 	
 	public void decreaseBatteryLevel() {
+		batteryDecreasing = true;
+		batteryIncreasing = false;
         new Thread(new Runnable() {
             @Override
             public void run() {
-            	while (batteryLevel > 0) {
+            	while (batteryLevel > 0 && batteryIncreasing == false && batteryDecreasing == true) {
                     try {
                        Thread.sleep(1000); // Sleep for 1 second
-                       batteryLevel -= 0.5;
+                       batteryLevel -= 1;
                        batteryLevel = Math.max(0, batteryLevel);
+                       publishBatteryLevel(batteryLevel);
                        if(batteryLevel!=0) {
-                    	   if(!OffMessageAt50Sent && batteryLevel <= 50 && batteryLevel > 25) {
-                    		   message = "Essentail devices only";
-                    		   OffMessageAt50Sent = true;
-                    		   publishMessage(message);
-                    	   }else if(!OffMessageAt25Sent  && batteryLevel <= 25) {
-                    		   message = "Power Saving Mode";
-                    		   OffMessageAt25Sent = true;
+                    	   if(batteryLevel <= 100 && batteryLevel > 50) {
+                    		   message = "Started using Battery";
                     		   publishMessage(message);
                     	   }
-                    	   System.out.println("Battery Level: " + batteryLevel);
-                       }else if(!powerOffMessage){
+                    	   if(batteryLevel <= 50 && batteryLevel > 25) {
+                    		   message = "Essentail devices only";
+                    		   publishMessage(message);
+                    	   }else if(batteryLevel <= 25) {
+                    		   message = "Power Saving Mode";
+                    		   publishMessage(message);
+                    	   }
+                       }else if(batteryLevel == 0){
                     	   message="Power off";
-                    	   powerOffMessage = true;
                     	   publishMessage(message);
                        }
                     } catch (InterruptedException e) {
@@ -72,23 +74,30 @@ public class BatteryImpl implements Battery {
        }).start();
 	}
 	
-	public void increaseBatteryLevel() {     
+	public void increaseBatteryLevel() {
+		batteryIncreasing = true;
+		batteryDecreasing = false;
         new Thread(new Runnable() {
             @Override
             public void run() {
-            	while (batteryLevel <100) {
+            	while (batteryLevel <=100 && batteryIncreasing == true && batteryDecreasing == false ) {
                     try {
-                       Thread.sleep(1000); // Sleep for 1 second
-                       batteryLevel += 0.5;
+                       Thread.sleep(500); // Sleep for 0.5 second
+                       batteryLevel += 1;
                        batteryLevel = Math.min(100, batteryLevel);
-                       if(batteryLevel != 100.0) {
-                    	   System.out.println("Battery Level: " + batteryLevel);
+                       if(batteryLevel <= 100.0) {
+                    	   publishBatteryLevel(batteryLevel);
                        }
+                       if(batteryLevel == 100) {
+                   		publishMessage("Charged");
+                   		}else {
+                   		publishMessage("Charging");
+                   		}
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
-                publishMessage("Chargered");
+            	
             }
        }).start();
 	} 
@@ -100,6 +109,17 @@ public class BatteryImpl implements Battery {
             Dictionary<String, Object> properties = new Hashtable<>();
             properties.put("BatteryStatus",Message);
             Event event = new Event("org/osgi/framework/BundleEvent/batteryStatus", properties);
+            eventAdmin.sendEvent(event);
+        } else {
+            System.out.println("Event admin is null");
+        }
+    }
+	
+	private void publishBatteryLevel(double batteryLevel) {
+        if (eventAdmin != null) {
+            Dictionary<String, Object> properties = new Hashtable<>();
+            properties.put("BatteryLevel",batteryLevel);
+            Event event = new Event("org/osgi/framework/BundleEvent/batteryLevel", properties);
             eventAdmin.sendEvent(event);
         } else {
             System.out.println("Event admin is null");
