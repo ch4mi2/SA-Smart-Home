@@ -4,6 +4,7 @@ package coresubscriber;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -66,6 +67,7 @@ public class Activator implements BundleActivator {
 			SecurityPanel.setSize(300,300);  
 			SecurityPanel.add(cctvUI.getInfoPanel());
 			SecurityPanel.add(cctvUI.getBtnPanel());
+			SecurityPanel.setBorder(BorderFactory.createTitledBorder("Security Control Unit"));
 			container.add(SecurityPanel);
 			container.add(Box.createVerticalGlue());
 		} catch (Exception e) {
@@ -85,7 +87,7 @@ public class Activator implements BundleActivator {
 		
 		container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS)); 
 		
-		mainFrame.setSize(500,500);  
+		mainFrame.setSize(800,800);  
 		mainFrame.add(container);
 		mainFrame.setVisible(true);
 	}
