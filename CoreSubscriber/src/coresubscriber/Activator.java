@@ -106,6 +106,7 @@ public class Activator implements BundleActivator {
 
 	public void stop(BundleContext bundleContext) throws Exception {
 		System.out.println("core stopped");
+		mainFrame.setVisible(false);
 		bundleContext.ungetService(clockServiceReference);
 		bundleContext.ungetService(lightServiceReference);
 		bundleContext.ungetService(cctvUIserviceReference);

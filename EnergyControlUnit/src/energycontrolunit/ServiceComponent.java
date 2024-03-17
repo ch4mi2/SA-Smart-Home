@@ -23,6 +23,7 @@ public class ServiceComponent implements EventHandler {
 	private EventAdmin eventAdmin;
 	private String currentBatteryStatus;
 	private boolean currentSolarStatus;
+	private String previousBatteryStatus;
 
     public void setEventAdmin(EventAdmin eventAdmin) {
         this.eventAdmin = eventAdmin;
@@ -38,7 +39,11 @@ public class ServiceComponent implements EventHandler {
 //		Boolean topic = (Boolean) event.getProperty("solarStatus");
 		if("org/osgi/framework/BundleEvent/solarStatus".equals(topic)) {
 			Boolean solarStatus = (Boolean) event.getProperty("solarStatus");
-			System.out.println("Current solar status : " + solarStatus);
+//			if(solarStatus == true) {
+//				System.out.println("Current solar status : " + "Active");
+//			}else {
+//				System.out.println("Current solar status : " + "Inactive");
+//			}
 			if(Activator.UI != null && solarStatus != null) {
 				Activator.UI.updateSolarStatus(solarStatus);
 			}
@@ -59,7 +64,10 @@ public class ServiceComponent implements EventHandler {
 			String batteryStatus = (String) event.getProperty("BatteryStatus");
             if (batteryStatus != null) {
             	currentBatteryStatus = batteryStatus;
-            	System.out.println("Current Battery Status : " + batteryStatus);
+//            	if(previousBatteryStatus != currentBatteryStatus) {
+//            		System.out.println("Current Battery Status : " + batteryStatus);
+//            		previousBatteryStatus = currentBatteryStatus;
+//            	}	
             	if(Activator.UI != null && currentBatteryStatus != null){
             		Activator.UI.updateBatteryStatus(currentBatteryStatus);
             	}
@@ -68,7 +76,7 @@ public class ServiceComponent implements EventHandler {
 		
 		if("org/osgi/framework/BundleEvent/batteryLevel".equals(topic)) {
 			Double batteryLevel = (Double) event.getProperty("BatteryLevel");
-			System.out.println("Battery Level : " + batteryLevel);
+//			System.out.println("Battery Level : " + batteryLevel);
 			if(Activator.UI != null && batteryLevel != null) {
 				Activator.UI.updateBatteryLevel(batteryLevel);
 			}
